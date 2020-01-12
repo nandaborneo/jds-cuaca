@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:cuaca/helper/api.dart';
 import 'package:cuaca/helper/linkhelper.dart';
+import 'package:cuaca/helper/session.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'forecast.g.dart';
@@ -25,10 +26,10 @@ class ForecastModel {
   Map<String, dynamic> toJson() => _$ForecastModelToJson(this);
 
   static Future getDataForecast() async {
-
-    return await Api.httpGet(LinkHelper.forecastGet).then((value) {
+    String cityId =await Session.getCityId();
+    return await Api.httpGet(LinkHelper.forecastGet+"?id="+cityId).then((value) {
       var response = json.decode(value);
-      if (response['success'] == "200") {
+      if (response['cod'] == "200") {
         return response;
       } else {}
     }).whenComplete(() {});

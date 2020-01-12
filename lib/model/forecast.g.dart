@@ -15,7 +15,7 @@ ForecastModel _$ForecastModelFromJson(Map<String, dynamic> json) {
         : Main.fromJson(json['main'] as Map<String, dynamic>),
     json['weather'] == null
         ? null
-        : Weather.fromJson(json['weather'] as Map<String, dynamic>),
+        : Weather.fromJson(json['weather'][0] as Map<String, dynamic>),
     json['clouds'] == null
         ? null
         : Clouds.fromJson(json['clouds'] as Map<String, dynamic>),
