@@ -33,14 +33,14 @@ class _FrontPageState extends State<FrontPage> {
     DateFormat _dateFormat = DateFormat.Hm();
     DateTime _currentDate =
         _dateFormat.parse(_dateFormat.format(DateTime.now()));
-    
+
     setState(() {
       _dayStatus = _currentDate.isAfter(_dateFormat.parse("06:00")) &&
           _currentDate.isBefore(_dateFormat.parse("18:00"));
     });
   }
 
-  _submit(){
+  _submit() {
     if (_formKey.currentState.validate()) {
       FocusScope.of(context).requestFocus(FocusNode());
       setState(() {
@@ -48,10 +48,10 @@ class _FrontPageState extends State<FrontPage> {
       });
       String userName = _userNameController.text;
       String kodePos = _kodePosController.text;
-      String namaKota =_namaKotaController.text;
-      String param =_indexTab == 0 ? '?zip=$kodePos,id' : '?q=$namaKota,id' ;
+      String namaKota = _namaKotaController.text;
+      String param = _indexTab == 0 ? '?zip=$kodePos,id' : '?q=$namaKota,id';
 
-      Api.httpGet(LinkHelper.forecastGet+param).then((value) {
+      Api.httpGet(LinkHelper.forecastGet + param).then((value) {
         var responseBody = json.decode(value);
         if (responseBody['cod'] == "200") {
           _scaffoldKey.currentState.removeCurrentSnackBar();
@@ -61,7 +61,7 @@ class _FrontPageState extends State<FrontPage> {
           CityModel cityModel = CityModel.fromJson(responseBody["city"]);
           Session.setUsername(userName);
           Session.setCityId(cityModel.id.toString());
-          if(_indexTab == 0 ){
+          if (_indexTab == 0) {
             Session.setZipCode(kodePos);
           }
           Future.delayed(Duration(seconds: 1), () {
@@ -90,6 +90,16 @@ class _FrontPageState extends State<FrontPage> {
         BackgroundGradientDayNight(
           dayStatus: _dayStatus,
         ),
+        Positioned(
+          right:-150,
+          top: -150,
+          child: Container(
+            child: Image.network(
+              LinkHelper.iconUrl + (_dayStatus ? "01d" : "01n") + "@2x.png",fit: BoxFit.fill,
+              height: 400,
+            ),
+          ),
+        ),
         SafeArea(
           child: Scaffold(
             resizeToAvoidBottomInset: false,
@@ -100,6 +110,10 @@ class _FrontPageState extends State<FrontPage> {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
+                Padding(
+                  padding: const EdgeInsets.all(64.0),
+                  child: Text("Cuaca Indonesia",style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold,fontSize: 24,),),
+                ),
                 SingleChildScrollView(
                   reverse: true,
                   child: Padding(
@@ -124,7 +138,10 @@ class _FrontPageState extends State<FrontPage> {
                                     children: <Widget>[
                                       Padding(
                                         padding: EdgeInsets.only(
-                                            top: 16, left: 8, right: 8,bottom: 8),
+                                            top: 16,
+                                            left: 8,
+                                            right: 8,
+                                            bottom: 8),
                                         child: TextFormField(
                                           controller: _userNameController,
                                           style: TextStyle(color: Colors.white),
@@ -217,7 +234,8 @@ class _FrontPageState extends State<FrontPage> {
                                                   left: 8, right: 8),
                                               child: TextFormField(
                                                 controller: _kodePosController,
-                                                keyboardType: TextInputType.number,
+                                                keyboardType:
+                                                    TextInputType.number,
                                                 style: TextStyle(
                                                     color: Colors.white),
                                                 decoration: InputDecoration(
@@ -293,22 +311,24 @@ class _FrontPageState extends State<FrontPage> {
                               bottom: 0,
                               right: 30,
                               left: 30,
-                              child: _isLoading ? Container(
-                                          child: Center(
-                                            child: CircularProgressIndicator(),
-                                          ),
-                                ) : RaisedButton(
-                                child: Text(
-                                  "Proses",
-                                  style: TextStyle(color: Colors.white)
-                                ),
-                                color: _dayStatus
-                                    ? AppTheme.dayEndGradient
-                                    : AppTheme.nightEndGradient,
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(16)),
-                                onPressed: _submit,
-                              ),
+                              child: _isLoading
+                                  ? Container(
+                                      child: Center(
+                                        child: CircularProgressIndicator(),
+                                      ),
+                                    )
+                                  : RaisedButton(
+                                      child: Text("Proses",
+                                          style:
+                                              TextStyle(color: Colors.white)),
+                                      color: _dayStatus
+                                          ? AppTheme.dayEndGradient
+                                          : AppTheme.nightEndGradient,
+                                      shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(16)),
+                                      onPressed: _submit,
+                                    ),
                             )
                           ],
                         ),

@@ -356,7 +356,7 @@ class _HomePageState extends State<HomePage> {
                                         _dateFormat.format(DateTime.now().toUtc()))) !=
                                 0 &&
                             _dateFormat.parse(_modelData.dtTxt).compareTo(
-                                    _dateFormat.parse(_dayCompare)) !=
+                                    _dateFormat.parse(_dayCompare!=null ? _dayCompare:"1970-01-01")) !=
                                 0) {
                           _dayCompare =
                               _dateFormat.parse(_modelData.dtTxt).toString();
