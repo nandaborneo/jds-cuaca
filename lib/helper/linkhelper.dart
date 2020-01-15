@@ -3,6 +3,6 @@ class LinkHelper {
   
   static final forecastGet = _apiEndpoint+"forecast";
   static final weatherGet = _apiEndpoint+"weather";
-  static final listCityIndoGet = 'http://listcityindo.free.beeceptor.com ';
+  static final listCityIndoGet = 'https://jds-cuaca.firebaseio.com/.json?print=pretty&orderBy="postal_code"&limitToFirst=1';
   static final iconUrl = 'http://openweathermap.org/img/wn/';
 }

@@ -10,6 +10,7 @@ import 'package:intl/intl.dart';
 import 'package:cuaca/model/city.dart';
 
 import '../../apptheme.dart';
+import '../../helper/api.dart';
 
 class FrontPage extends StatefulWidget {
   @override
@@ -40,17 +41,26 @@ class _FrontPageState extends State<FrontPage> {
     });
   }
 
-  _submit() {
+  _submit() async{
     if (_formKey.currentState.validate()) {
       FocusScope.of(context).requestFocus(FocusNode());
+      
+      String userName = _userNameController.text;
+      String kodePos = _kodePosController.text;
+      String namaKota = _indexTab == 0 ? await Api.httpGet(LinkHelper.listCityIndoGet+'&equalTo="$kodePos"').then((value){
+        var responseBody = json.decode(value);
+        return responseBody[responseBody.keys.first]["sub_district"];
+      })
+      : _namaKotaController.text;
+      print(namaKota);
+      if(namaKota == "" && namaKota == null){
+        return null;
+      }
+      String param = '?q=$namaKota,id';
+
       setState(() {
         _isLoading = true;
       });
-      String userName = _userNameController.text;
-      String kodePos = _kodePosController.text;
-      String namaKota = _namaKotaController.text;
-      String param = _indexTab == 0 ? '?zip=$kodePos,id' : '?q=$namaKota,id';
-
       Api.httpGet(LinkHelper.forecastGet + param).then((value) {
         var responseBody = json.decode(value);
         if (responseBody['cod'] == "200") {
