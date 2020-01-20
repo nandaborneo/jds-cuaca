@@ -1,6 +1,6 @@
 # cuaca
 
-Project untuk persyaratan administrasi Jabar Digital Service
+
 
 ## 2 Tema
 | Day (6am-6pm) | Night (6pm-am)|
